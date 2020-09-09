@@ -118,7 +118,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         "CLIENT": {
-            "name": 'Amit',
+            "name": 'Amit1',
             "host": 'mongodb+srv://admin:admin@cluster0.x7xcr.mongodb.net/sankey?retryWrites=true&w=majority',
             "username": 'admin',
             "password": 'admin',
