@@ -5,7 +5,12 @@ import django
 
 # Create your models here.
 class Emp(models.Model):
+<<<<<<< HEAD
     id = models.IntegerField(auto_created=True, primary_key=True)
+=======
+    _id=models.CharField(max_length=100, default='none')
+    id=models.IntegerField(auto_created=True,primary_key=True)
+>>>>>>> 0a2e09fb8b3b33f276a060b491c4561823b8ca46
     name = models.CharField(max_length=100, default='none')
     email = models.EmailField(default='none')
     username = models.CharField(max_length=100, default='undefined')
