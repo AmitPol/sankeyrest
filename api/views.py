@@ -20,7 +20,7 @@ def decode(encoded):
     except jwt.InvalidTokenError:
         return dict({
             'username': '',
-            'id': 0
+            'emp_id': 0
         })
     return decrypt
 
@@ -35,8 +35,7 @@ class Fire(generics.GenericAPIView, mixins.UpdateModelMixin):
         querysets = Emp.objects.all()
         entries = decode(request.headers.get('Authorisation'))
         for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.id and entries['role']:
-                # request.data['end_date'] = date.today()
+            if entries['username'] == data.username and entries['id'] == data.emp_id and entries['role']:
                 print(request.data)
                 return self.update(request, id)
             else:
@@ -47,19 +46,16 @@ class HrView(generics.GenericAPIView, mixins.ListModelMixin, mixins.UpdateModelM
              mixins.CreateModelMixin, mixins.DestroyModelMixin):
     queryset = Emp.objects.all()
     serializer_class = HR_Serial
-    # authentication_classes = [SessionAuthentication]
     lookup_field = 'id'
 
     def get(self, request, id=None):
-        querysets = Emp.objects.all()
+        querysets = Emp.objects.all().filter(is_active=True)
         entries = decode(request.headers.get('Authorisation'))
         for data in querysets:
-            # if 1 == 1:
-            if entries['username'] == data.username and entries['id'] == data.id:
+            if entries['username'] == data.username and entries['id'] == data.emp_id:
                 if id:
                     return self.retrieve(request)
                 else:
-
                     return self.list(request)
             else:
                 return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
@@ -68,7 +64,7 @@ class HrView(generics.GenericAPIView, mixins.ListModelMixin, mixins.UpdateModelM
         querysets = Emp.objects.all()
         entries = decode(request.headers.get('Authorisation'))
         for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.id:
+            if entries['username'] == data.username and entries['id'] == data.emp_id:
                 return self.update(request, id)
             else:
                 return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
@@ -77,14 +73,10 @@ class HrView(generics.GenericAPIView, mixins.ListModelMixin, mixins.UpdateModelM
         querysets = Emp.objects.all()
         counts = querysets.count()
         serializer_class = Emp_Serial
-        # request.headers.set('authorization','')
         entries = decode(request.headers.get('Authorisation'))
         for data in querysets:
-
-            if entries['username'] == data.username and entries['id'] == data.id:
-
-                request.data['id'] = counts + 1
-                print(request.data)
+            if entries['username'] == data.username and entries['id'] == data.emp_id:
+                request.data['emp_id'] = counts + 1
                 return self.create(request)
             else:
                 return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
@@ -93,9 +85,7 @@ class HrView(generics.GenericAPIView, mixins.ListModelMixin, mixins.UpdateModelM
         querysets = Emp.objects.all()
         entries = decode(request.headers.get('Authorisation'))
         for data in querysets:
-            print(data)
-            if entries['username'] == data.username and entries['id'] == data.id and entries['role']:
-                print(request.data)
+            if entries['username'] == data.username and entries['id'] == data.emp_id and entries['role']:
                 return self.destroy(request, id)
             else:
                 return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
@@ -108,13 +98,11 @@ class Bulk(generics.GenericAPIView, mixins.CreateModelMixin):
         querysets = Emp.objects.all()
         counts = querysets.count()
         entries = decode(request.headers.get('Authorisation'))
-        print(request.data)
         for data in querysets:
-            print(entries['role'])
-            if entries['username'] == data.username and entries['id'] == data.id and entries['role']:
+            if entries['username'] == data.username and entries['id'] == data.emp_id and entries['role']:
                 i = 1
                 for datas in request.data:
-                    datas['id'] = counts + i
+                    datas['emp_id'] = counts + i
                     serializer_class = Emp_Serial(data=datas)
                     if serializer_class.is_valid():
                         serializer_class.save()
@@ -151,13 +139,13 @@ class Search(generics.GenericAPIView):
                     'username': data.username,
                     'message': 'Found',
                     'role': isAdmin,
-                    'id': data.id
+                    'id': data.emp_id
                 }, settings.SECRET_KEY, algorithm='HS256')
                 payload = [{
                     'username': data.username,
                     'message': 'Found',
                     'role': isAdmin,
-                    'id': data.id,
+                    'id': data.emp_id,
                     'secret': "".join(chr(x) for x in payloads)
                 }]
 
@@ -189,28 +177,27 @@ class Sort(generics.ListAPIView):
     serializer_class = HR_Serial
     queryset = Emp.objects.all().filter(is_active=True)
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
-    filter_fields = ('id', 'name', 'username', 'email', 'created_date', 'role', 'is_active', 'end_date')
-    ordering_fields = ('id', 'name', 'username', 'email', 'created_date', 'role', 'is_active', 'end_date')
-    search_fields = ('id', 'name', 'username', 'email', 'created_date', 'role', 'is_active', 'end_date')
+    filter_fields = ('emp_id', 'name', 'username', 'email', 'created_date', 'role', 'is_active', 'end_date')
+    ordering_fields = ('emp_id', 'name', 'username', 'email', 'created_date', 'role', 'is_active', 'end_date')
+    search_fields = ('emp_id', 'name', 'username', 'email', 'created_date', 'role', 'is_active', 'end_date')
     pagination_class = ExamplePagination
 
 
 class Searching(generics.GenericAPIView, mixins.ListModelMixin):
     serializer_class = HR_Serial
-    queryset = Emp.objects.all()
+    queryset = Emp.objects.all().filter(is_active=True)
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
-    filter_fields = ('id', 'name', 'username', 'email', 'created_date', 'role')
-    ordering_fields = ('id', 'name', 'username', 'email', 'created_date', 'role')
-    search_fields = ('id', 'name', 'username', 'email', 'created_date', 'role')
+    filter_fields = ('emp_id', 'name', 'username', 'email', 'created_date', 'role')
+    ordering_fields = ('emp_id', 'name', 'username', 'email', 'created_date', 'role')
+    search_fields = ('emp_id', 'name', 'username', 'email', 'created_date', 'role')
     pagination_class = ExamplePagination
 
     def get(self, request):
         querysets = Emp.objects.all().filter(is_active=True)
         entries = decode(request.headers.get('Authorisation'))
         authentication = request.session.get('sessionid')
-        print(authentication)
         for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.id:
+            if entries['username'] == data.username and entries['id'] == data.emp_id:
                 return self.list(request)
             else:
                 return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)

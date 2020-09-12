@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3)y_v8o=zfbj=y+8&1lh&=hl_swab&upp!z@1i+p)y1s@nqd+z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True  # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
@@ -108,7 +108,7 @@ TEMPLATES = [
         },
     },
 ]
-ENFORCE_SCHEMA:False
+ENFORCE_SCHEMA = False
 WSGI_APPLICATION = 'restapi.wsgi.application'
 
 # Database

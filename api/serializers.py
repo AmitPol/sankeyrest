@@ -6,13 +6,13 @@ class HR_Serial(serializers.ModelSerializer):
     class Meta:
         model = Emp
         fields = '__all__'
-        read_only_fields = ['id', 'created_date']
+        read_only_fields = ['emp_id', 'created_date']
 
 
 class Emp_Serial(serializers.ModelSerializer):
     class Meta:
         model = Emp
-        fields = ['id', 'name', 'email', 'username', 'role', 'password']
+        fields = ['emp_id', 'name', 'email', 'username', 'role', 'password']
 
 # class IdeaListSerializer(serializers.ListSerializer):
 #     def create(self, validated_data):
