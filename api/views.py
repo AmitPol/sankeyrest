@@ -139,13 +139,13 @@ class Search(generics.GenericAPIView):
                     'username': data.username,
                     'message': 'Found',
                     'role': isAdmin,
-                    'id': data.emp_id
+                    'id': data.id
                 }, settings.SECRET_KEY, algorithm='HS256')
                 payload = [{
                     'username': data.username,
                     'message': 'Found',
                     'role': isAdmin,
-                    'id': data.emp_id,
+                    'id': data.id,
                     'secret': "".join(chr(x) for x in payloads)
                 }]
 
