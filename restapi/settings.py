@@ -108,11 +108,8 @@ TEMPLATES = [
         },
     },
 ]
-<<<<<<< HEAD
-ENFORCE_SCHEMA = False
-=======
+
 ENFORCE_SCHEMA=False
->>>>>>> c8784d74428aaee90c1a7356aa4977ba018fb00c
 WSGI_APPLICATION = 'restapi.wsgi.application'
 
 # Database
