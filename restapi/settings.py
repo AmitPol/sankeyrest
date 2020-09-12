@@ -108,7 +108,7 @@ TEMPLATES = [
         },
     },
 ]
-
+ENFORCE_SCHEMA:False
 WSGI_APPLICATION = 'restapi.wsgi.application'
 
 # Database
