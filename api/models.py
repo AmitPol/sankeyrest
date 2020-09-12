@@ -1,11 +1,12 @@
-from django.db import models
+from djongo import models
 from datetime import datetime
 import django
 
 
 # Create your models here.
 class Emp(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+    _id = models.ObjectIdField(default='emp' + str(django.utils.timezone.now()))
+    id = models.IntegerField(auto_created=True, unique=True)
     name = models.CharField(max_length=100, default='none')
     email = models.EmailField(default='none')
     username = models.CharField(max_length=100, default='undefined')
