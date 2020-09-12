@@ -1,3 +1,1 @@
-release: python manage.py migrate
-
-web: gunicorn restapi.wsgi
+release: python manage.py makemigrations
