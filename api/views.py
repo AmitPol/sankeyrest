@@ -34,12 +34,13 @@ class Fire(generics.GenericAPIView, mixins.UpdateModelMixin):
     def post(self, request, id):
         querysets = Emp.objects.all()
         entries = decode(request.headers.get('Authorisation'))
-        for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.emp_id and entries['role']:
-                print(request.data)
-                return self.update(request, id)
-            else:
-                return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
+        return self.update(request, id)
+        # for data in querysets:
+        #     if entries['username'] == data.username and entries['id'] == data.emp_id and entries['role']:
+        #         print(request.data)
+        #         return self.update(request, id)
+        #     else:
+        #         return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class HrView(generics.GenericAPIView, mixins.ListModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin,
@@ -51,35 +52,42 @@ class HrView(generics.GenericAPIView, mixins.ListModelMixin, mixins.UpdateModelM
     def get(self, request, id=None):
         querysets = Emp.objects.all().filter(is_active=True)
         entries = decode(request.headers.get('Authorisation'))
-        for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.emp_id:
-                if id:
-                    return self.retrieve(request)
-                else:
-                    return self.list(request)
-            else:
-                return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
+        if id:
+            return self.retrieve(request)
+        else:
+            return self.list(request)
+        # for data in querysets:
+        #     if entries['username'] == data.username and entries['id'] == data.emp_id:
+        #         if id:
+        #             return self.retrieve(request)
+        #         else:
+        #             return self.list(request)
+        #     else:
+        #         return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request, id):
         querysets = Emp.objects.all()
         entries = decode(request.headers.get('Authorisation'))
-        for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.emp_id:
-                return self.update(request, id)
-            else:
-                return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
+        return self.update(request, id)
+        # for data in querysets:
+        #     if entries['username'] == data.username and entries['id'] == data.emp_id:
+        #         return self.update(request, id)
+        #     else:
+        #         return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
 
     def post(self, request):
         querysets = Emp.objects.all()
         counts = querysets.count()
         serializer_class = Emp_Serial
         entries = decode(request.headers.get('Authorisation'))
-        for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.emp_id:
-                request.data['emp_id'] = counts + 1
-                return self.create(request)
-            else:
-                return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
+        request.data['emp_id'] = counts + 1
+        return self.create(request)
+        # for data in querysets:
+        #     if entries['username'] == data.username and entries['id'] == data.emp_id:
+        #         request.data['emp_id'] = counts + 1
+        #         return self.create(request)
+        #     else:
+        #         return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
 
     def delete(self, request, id):
         querysets = Emp.objects.all()
@@ -99,7 +107,8 @@ class Bulk(generics.GenericAPIView, mixins.CreateModelMixin):
         counts = querysets.count()
         entries = decode(request.headers.get('Authorisation'))
         for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.emp_id and entries['role']:
+            # if entries['username'] == data.username and entries['id'] == data.emp_id and entries['role']:
+            if 1:
                 i = 1
                 for datas in request.data:
                     datas['emp_id'] = counts + i
@@ -195,9 +204,10 @@ class Searching(generics.GenericAPIView, mixins.ListModelMixin):
     def get(self, request):
         querysets = Emp.objects.all().filter(is_active=True)
         entries = decode(request.headers.get('Authorisation'))
-        authentication = request.session.get('sessionid')
+        authentication = request.session.get('sessionid')   
         for data in querysets:
-            if entries['username'] == data.username and entries['id'] == data.emp_id:
-                return self.list(request)
-            else:
-                return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)
+            return self.list(request)
+            # if entries['username'] == data.username and entries['id'] == data.emp_id:
+            #     return self.list(request)
+            # else:
+            #     return JsonResponse([{'message': 'Unauthorised'}], safe=False, status=status.HTTP_401_UNAUTHORIZED)

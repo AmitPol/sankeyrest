@@ -15,6 +15,7 @@ from datetime import timedelta
 
 import corsheaders
 
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,9 +32,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True  # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:4200',
-)  # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:4200',
+# )  # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
 
 # CORS_ORIGIN_REGEX_WHITELIST = [
 #     'http://localhost:4200',
@@ -120,7 +121,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         "CLIENT": {
             "name": 'Amit1',
-            "host": 'mongodb+srv://admin:admin@cluster0.x7xcr.mongodb.net/sankey?retryWrites=true&w=majority',
+            "host": 'mongodb+srv://admin:admin@cluster0.x7xcr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
             "username": 'admin',
             "password": 'admin',
             "authMechanism": "SCRAM-SHA-1",
@@ -166,4 +167,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
-
+django_heroku.settings(locals())
