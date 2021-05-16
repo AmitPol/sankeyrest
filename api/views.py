@@ -155,7 +155,7 @@ class Search(generics.GenericAPIView):
                     'message': 'Found',
                     'role': isAdmin,
                     'id': data.id,
-                    'secret': "".join(chr(x) for x in payloads)
+                    'secret': "")
                 }]
 
                 return JsonResponse(payload, safe=False)
