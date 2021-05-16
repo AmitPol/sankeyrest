@@ -111,7 +111,7 @@ class Bulk(generics.GenericAPIView, mixins.CreateModelMixin):
             if 1:
                 i = 1
                 for datas in request.data:
-                    datas['emp_id'] = counts + i
+                    datas['emp_id'] = int(counts) + int(i)
                     serializer_class = Emp_Serial(data=datas)
                     if serializer_class.is_valid():
                         serializer_class.save()
